@@ -7,21 +7,6 @@ mod cli;
 fn main() {
     let matches =
         cli::get_arguments().get_matches();
-
-//    let args: Vec<String> = std::env::args().collect();
-//    let mut options = getopts::Options::new();
-//    options.optflag("a", "anonymous-request", "set the petition to be anonymous");
-//    options.reqopt("i", "input", "string to encrypt", "string");
-//    options.optopt("u", "username", "username to login", "username");
-//    options.optopt("p", "password", "password to login", "password");
-//    options.reqopt("s", "server", "server to connect", "URL");
-//    let matches = match options.parse(&args[1..]) {
-//        Ok(m) => { m }
-//        Err(_) => {
-//            println!("{}", options.short_usage("gocd-encrypt"));
-//            std::process::exit(1);
-//        }
-//    };
     let string_to_encrypt = matches.value_of("INPUT").unwrap();
     let server = matches.value_of("SERVER").unwrap().to_owned() + "/go/api/admin/encrypt";
     let mut request = reqwest::blocking::Client::new()
@@ -41,9 +26,22 @@ fn main() {
         };
         request = request.basic_auth(username.clone(), Some(password.clone()));
     }
-    let echo_json: serde_json::Value = request.send().unwrap().json().unwrap();
+    let echo_json: serde_json::Value = match match request
+        .send(){
+            Ok(req) => { req }
+            Err(err) => {
+                eprintln!("{}:\n{}", "Error when sending request", err);
+                std::process::exit(1);
+            }
+        }.json() {
+            Ok(json) => { json }
+            Err(err) => {
+                eprintln!("{}:\n{}", "Error converting request to json", err);
+                std::process::exit(1);
+            }
+        };
     if echo_json.get("encrypted_value") == None {
-        eprintln!("Received response is invalid");
+        eprintln!("Invalid response from server");
         std::process::exit(1);
     }
     else {
