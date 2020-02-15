@@ -1,7 +1,7 @@
 # Maintainer: Alejandro Valdes <alejandrovaldes at live dot com>
 
 pkgname=gocd-encrypt
-pkgver=0.1.0
+pkgver=0.1.1
 pkgrel=1
 pkgdesc="CLI to encrypt Strings using a remote gocd server"
 arch=('x86_64')
@@ -9,7 +9,7 @@ url="https://github.com/alevalv/gocd-encrypt"
 license=('GPLv2')
 makedepends=('rust' 'cargo')
 source=("https://github.com/alevalv/gocd-encrypt/archive/${pkgver}.zip")
-sha512sums=('91b3e5003bbc2fa65d4c6f67697071fbb8eaced77e3be274482db92d8958a04837c378a4dc533948a9d1188407571b60e175dfb16212c4e0d61dd656d28d71d2')
+sha512sums=('77a986657c43ac5a6f5f7896b1806e49d8f31ef08d763227fb8e460538f9c270840a69b688a457f41c6d3a15578ffdab07e926fdff5185d56826445e329882fc')
 
 prepare() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -29,4 +29,6 @@ check() {
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   install -Dm 755 "target/release/${pkgname}" "${pkgdir}/usr/bin/${pkgname}"
+  install -Dm 755 "target/_${pkgname}" "${pkgdir}/usr/share/zsh/site-functions/_${pkgname}"
+  install -Dm 755 "target/${pkgname}.bash" "${pkgdir}/usr/share/bash-completion/completions/${pkgname}"
 }
