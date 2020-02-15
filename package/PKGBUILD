@@ -9,7 +9,7 @@ url="https://github.com/alevalv/gocd-encrypt"
 license=('GPLv2')
 makedepends=('rust' 'cargo')
 source=("https://github.com/alevalv/gocd-encrypt/archive/${pkgver}.zip")
-sha512sums=('77a986657c43ac5a6f5f7896b1806e49d8f31ef08d763227fb8e460538f9c270840a69b688a457f41c6d3a15578ffdab07e926fdff5185d56826445e329882fc')
+sha512sums=('bd41149939381d23c9ebf6710d05a89971b2e5056ec497334abb22705b961b0674db5e37ee945854a8f63e744d3dad5394dac81213a712a955850a14f9eb462e')
 
 prepare() {
   cd "${srcdir}/${pkgname}-${pkgver}"
