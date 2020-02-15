@@ -2,15 +2,11 @@
 extern crate clap;
 
 use clap::Shell;
-use std::env;
 
 include!("src/cli.rs");
 
 fn main() {
-    let outdir = match env::var_os("OUT_DIR") {
-        None => return,
-        Some(outdir) => outdir,
-    };
+    let outdir = "target/";
     let mut app = get_arguments();
     app.gen_completions(
         "gocd-encrypt",           // We specify the bin name manually
